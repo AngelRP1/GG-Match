@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # Base de datos para el Microservicio 1 (Usuarios y Equipos)
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: ggmatch_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: superpassword123
+      POSTGRES_DB: auth_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Base de datos para el Microservicio 2 (Torneos y Brackets)
+  mongo_db:
+    image: mongo:6.0
+    container_name: ggmatch_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: superpassword123
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # Base de datos para el Microservicio 3 (Resultados y Estadísticas)
+  redis_db:
+    image: redis:7-alpine
+    container_name: ggmatch_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+# Volúmenes para que no se borren los datos si apagas la compu
+volumes:
+  postgres_data:
+  mongo_data:
