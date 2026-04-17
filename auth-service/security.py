@@ -1,6 +1,8 @@
 from passlib.context import CryptContext
 import jwt
 from datetime import datetime, timedelta, timezone
+from fastapi import status, HTTPException
+from jwt.exceptions import InvalidTokenError
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -25,3 +27,21 @@ def crear_token_acceso(datos: dict):
     # Fabricamos el token con nuestra firma secreta
     token_jwt = jwt.encode(a_encriptar, SECRET_KEY, algorithm=ALGORITHM)
     return token_jwt
+
+def verificar_token_acceso(token: str):
+    excepcion_credenciales = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="No se pudo validar las credenciales",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        
+        if username is None:
+            raise excepcion_credenciales
+        
+        return username 
+    
+    except InvalidTokenError:
+        raise excepcion_credenciales
