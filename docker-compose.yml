@@ -4,7 +4,7 @@ services:
     build: ./auth-service
     container_name: ggmatch_auth
     ports:
-      - "8000:8000"
+      - "80:8000"
     volumes:
       - ./auth-service:/app 
     depends_on:
