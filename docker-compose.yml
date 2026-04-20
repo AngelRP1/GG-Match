@@ -1,7 +1,7 @@
 services:
   # MICROSERVICIO DE PYTHON
   auth_api:
-    build: ./auth-service
+    image: registry.digitalocean.com/gg-match-registry/gg-match-api:latest
     container_name: ggmatch_auth
     ports:
       - "80:8000"
