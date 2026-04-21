@@ -48,7 +48,7 @@ services:
     ports:
       - "8001:8000"
     depends_on:
-      - ggmatch_mongo
+      - mongo_db
 
 volumes:
   postgres_data:
