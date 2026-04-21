@@ -21,7 +21,7 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Construir imagen de Docker
-        run: docker build -t registry.digitalocean.com/gg-match-registry/gg-match-api:latest .
+        run: docker build -t registry.digitalocean.com/gg-match-registry/gg-match-api:latest ./auth-service
 
       - name: Subir imagen al Registry
         run: docker push registry.digitalocean.com/gg-match-registry/gg-match-api:latest

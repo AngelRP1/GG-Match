@@ -1,5 +1,4 @@
 services:
-  # MICROSERVICIO DE PYTHON
   auth_api:
     image: registry.digitalocean.com/gg-match-registry/gg-match-api:latest
     container_name: ggmatch_auth
