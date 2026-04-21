@@ -1,0 +1,121 @@
+# ==========================================
+# 1. TOURNAMENT SERVICE
+# ==========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: tournament-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: tournament
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tournament-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tournament
+  template:
+    metadata:
+      labels:
+        app: tournament
+    spec:
+      containers:
+      - name: tournament
+        image: registry.digitalocean.com/gg-match-registry/gg-match-api:tournament
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MONGO_URL
+          value: "mongodb://admin:superpassword123@mongo-db:27017" 
+        - name: JWT_SECRET_KEY
+          value: "firma_secreta_de_ggmatch_super_segura"
+
+# ==========================================
+# 2. STATS SERVICE
+# ==========================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stats-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: stats
+  ports:
+    - protocol: TCP
+      port: 8002
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stats-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stats
+  template:
+    metadata:
+      labels:
+        app: stats
+    spec:
+      containers:
+      - name: stats
+        image: registry.digitalocean.com/gg-match-registry/gg-match-api:stats
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REDIS_HOST
+          value: "redis-db"
+
+# ==========================================
+# 3. AUTH SERVICE
+# ==========================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: auth
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+      - name: auth
+        image: registry.digitalocean.com/gg-match-registry/gg-match-api:auth
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://admin:root123@postgres-db:5432/auth_db"
+        - name: JWT_SECRET_KEY
+          value: "firma_secreta_de_ggmatch_super_segura"
