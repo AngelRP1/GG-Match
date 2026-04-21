@@ -42,6 +42,8 @@ jobs:
             docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
             cd ~/GG-Match
             
+            git pull origin main
+
             # Descargar ambas imágenes frescas con sus nuevas etiquetas
             docker pull registry.digitalocean.com/gg-match-registry/gg-match-api:auth
             docker pull registry.digitalocean.com/gg-match-registry/gg-match-api:tournament
