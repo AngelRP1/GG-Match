@@ -43,7 +43,7 @@ services:
       - "6379:6379"
 
   tournament_api:
-    build: ./tournament-service
+    image: registry.digitalocean.com/gg-match-registry/gg-match-tournament:latest
     container_name: ggmatch_tournament
     ports:
       - "8001:8000"

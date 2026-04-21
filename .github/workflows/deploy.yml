@@ -20,11 +20,17 @@ jobs:
       - name: Iniciar sesión en el Container Registry
         run: doctl registry login --expiry-seconds 600
 
-      - name: Construir imagen de Docker
+      - name: Construir imagen Auth
         run: docker build -t registry.digitalocean.com/gg-match-registry/gg-match-api:latest ./auth-service
 
-      - name: Subir imagen al Registry
+      - name: Subir imagen Auth
         run: docker push registry.digitalocean.com/gg-match-registry/gg-match-api:latest
+
+      - name: Construir imagen Tournament
+        run: docker build -t registry.digitalocean.com/gg-match-registry/gg-match-tournament:latest ./tournament-service
+
+      - name: Subir imagen Tournament
+        run: docker push registry.digitalocean.com/gg-match-registry/gg-match-tournament:latest
 
       - name: Desplegar en el Droplet
         uses: appleboy/ssh-action@v1.0.3
@@ -33,12 +39,12 @@ jobs:
           username: root
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            # Entrar al registro privado desde el servidor
             docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
             cd ~/GG-Match
             
-            # Forzar la descarga de la nueva imagen
+            # Descargar ambas imágenes frescas
             docker pull registry.digitalocean.com/gg-match-registry/gg-match-api:latest
+            docker pull registry.digitalocean.com/gg-match-registry/gg-match-tournament:latest
             
-            # Reiniciar los contenedores con el código nuevo
+            # Reiniciar todo
             docker-compose up -d
