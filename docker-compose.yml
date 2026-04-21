@@ -52,6 +52,16 @@ services:
     depends_on:
       - mongo_db
 
+  stats_api:
+    image: registry.digitalocean.com/gg-match-registry/gg-match-api:stats
+    container_name: ggmatch_stats
+    ports:
+      - "8002:8000"
+    environment:
+      - REDIS_HOST=redis_db
+    depends_on:
+      - redis_db
+
 volumes:
   postgres_data:
   mongo_data:

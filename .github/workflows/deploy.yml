@@ -32,6 +32,12 @@ jobs:
       - name: Subir imagen Tournament
         run: docker push registry.digitalocean.com/gg-match-registry/gg-match-api:tournament
 
+      - name: Construir imagen Stats
+        run: docker build -t registry.digitalocean.com/gg-match-registry/gg-match-api:stats ./stats-service
+
+      - name: Subir imagen Stats
+        run: docker push registry.digitalocean.com/gg-match-registry/gg-match-api:stats
+
       - name: Desplegar en el Droplet
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -47,6 +53,7 @@ jobs:
             # Descargar ambas imágenes frescas con sus nuevas etiquetas
             docker pull registry.digitalocean.com/gg-match-registry/gg-match-api:auth
             docker pull registry.digitalocean.com/gg-match-registry/gg-match-api:tournament
+            docker pull registry.digitalocean.com/gg-match-registry/gg-match-api:stats
             
             # Reiniciar todo
             docker-compose up -d
