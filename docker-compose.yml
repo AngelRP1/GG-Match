@@ -1,6 +1,6 @@
 services:
   auth_api:
-    image: registry.digitalocean.com/gg-match-registry/gg-match-api:latest
+    image: registry.digitalocean.com/gg-match-registry/gg-match-api:auth
     container_name: ggmatch_auth
     ports:
       - "80:8000"
@@ -43,7 +43,7 @@ services:
       - "6379:6379"
 
   tournament_api:
-    image: registry.digitalocean.com/gg-match-registry/gg-match-tournament:latest
+    image: registry.digitalocean.com/gg-match-registry/gg-match-api:tournament
     container_name: ggmatch_tournament
     ports:
       - "8001:8000"
