@@ -49,8 +49,6 @@ services:
       - "8001:8000"
     depends_on:
       - ggmatch_mongo
-    networks:
-      - gg-match_default
 
 volumes:
   postgres_data:
