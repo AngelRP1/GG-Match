@@ -95,6 +95,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8000
+--- 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -116,6 +117,6 @@ spec:
         - containerPort: 8000
         env:
         - name: DATABASE_URL
-          value: "postgresql://admin:root123@postgres-db:5432/auth_db"
+          value: "postgresql://admin:superpassword123@postgres-db:5432/auth_db"
         - name: JWT_SECRET_KEY
           value: "firma_secreta_de_ggmatch_super_segura"
