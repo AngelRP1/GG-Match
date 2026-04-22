@@ -113,6 +113,7 @@ spec:
       containers:
       - name: auth
         image: registry.digitalocean.com/gg-match-registry/gg-match-api:auth
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
